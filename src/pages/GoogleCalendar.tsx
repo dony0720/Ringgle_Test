@@ -1,7 +1,14 @@
+import Header from "@/components/Header";
+import LeftContent from "@/components/LeftContent/LeftContent";
+import RightContent from "@/components/RightContent/CalendarList";
 const GoogleCalendar = () => {
   return (
-    <div>
-      <h1>Google Calendar</h1>
+    <div className="w-[100vw] h-[100vh] min-w-[1280px] ">
+      <Header />
+      <div className="flex h-[85%]">
+        <LeftContent />
+        <RightContent />
+      </div>
     </div>
   );
 };
