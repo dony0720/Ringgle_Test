@@ -1,6 +1,6 @@
 import CreateTask from "./CreateTask";
 import { Calendar } from "@/components/ui/calendar";
-import Modal from "../Modal";
+// import Modal from "../Modal";
 import { useDispatch, useSelector } from "react-redux";
 import { setDate } from "@/store/features/dateSlice";
 import { RootState } from "@/store/store";
@@ -43,7 +43,7 @@ const LeftContent = () => {
         onSelect={handleDateSelect}
         className="p-0"
       />
-      <Modal />
+      {/* <Modal /> */}
     </div>
   );
 };
