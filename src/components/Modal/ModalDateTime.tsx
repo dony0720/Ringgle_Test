@@ -6,15 +6,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { ScrollArea } from "@/components/ui/scroll-area";
-
-interface ModalDateTimeProps {
-  date: Date | undefined;
-  startTime: string;
-  endTime: string;
-  onDateChange: (date: Date | undefined) => void;
-  onStartTimeChange: (time: string) => void;
-  onEndTimeChange: (time: string) => void;
-}
+import { ModalDateTimeProps } from "@/types/modal";
 
 const ModalDateTime = ({
   date,
@@ -66,24 +58,25 @@ const ModalDateTime = ({
     onEndTimeChange(oneHourLater);
   };
 
-  const generateTimeOptions = (isEndTime: boolean = false) => {
+  const generateAllTimeOptions = () => {
     const times = [];
     for (let hour = 0; hour < 24; hour++) {
+      // 0시부터 23시까지 반복
       for (let minute = 0; minute < 60; minute += 30) {
-        const period = hour < 12 ? "오전" : "오후";
-        const displayHour = hour === 0 ? 12 : hour > 12 ? hour - 12 : hour;
-        const displayMinute = minute === 0 ? "00" : minute;
-        const timeString = `${period} ${displayHour}:${displayMinute}`;
-
-        if (
-          !isEndTime ||
-          (isEndTime && timeToMinutes(timeString) > timeToMinutes(startTime))
-        ) {
-          times.push(timeString);
-        }
+        // 0분부터 59분까지 30분 간격으로 반복
+        const period = hour < 12 ? "오전" : "오후"; // 시간대 확인
+        const displayHour = hour === 0 ? 12 : hour > 12 ? hour - 12 : hour; // 12시간 형식으로 변환
+        const displayMinute = minute === 0 ? "00" : minute; // 분 표시
+        times.push(`${period} ${displayHour}:${displayMinute}`); // 시간 추가
       }
     }
     return times;
+  };
+
+  const generateEndTimeOptions = () => {
+    return generateAllTimeOptions().filter(
+      (time) => timeToMinutes(time) > timeToMinutes(startTime)
+    );
   };
 
   return (
@@ -97,7 +90,7 @@ const ModalDateTime = ({
             </div>
           </PopoverTrigger>
           <PopoverContent className="w-auto p-0">
-            <Calendar selected={date} onSelect={onDateChange} initialFocus />
+            <Calendar selected={date} onSelect={onDateChange} />
           </PopoverContent>
         </Popover>
         <Popover>
@@ -109,7 +102,7 @@ const ModalDateTime = ({
           <PopoverContent className="w-[200px] p-2">
             <ScrollArea className="h-[200px]">
               <div className="flex flex-col gap-1">
-                {generateTimeOptions().map((time) => (
+                {generateAllTimeOptions().map((time) => (
                   <div
                     key={time}
                     className="px-2 py-1 text-sm rounded-md hover:bg-gray-100 cursor-pointer"
@@ -132,7 +125,7 @@ const ModalDateTime = ({
           <PopoverContent className="w-[200px] p-2">
             <ScrollArea className="h-[200px]">
               <div className="flex flex-col gap-1">
-                {generateTimeOptions(true).map((time) => (
+                {generateEndTimeOptions().map((time) => (
                   <div
                     key={time}
                     className="px-2 py-1 text-sm rounded-md hover:bg-gray-100 cursor-pointer"

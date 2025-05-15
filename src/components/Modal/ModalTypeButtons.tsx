@@ -1,9 +1,5 @@
 import { Button } from "@/components/ui/button";
-
-interface ModalTypeButtonsProps {
-  selectedType: "event" | "todo" | "appointment";
-  onTypeSelect: (type: "event" | "todo" | "appointment") => void;
-}
+import { ModalTypeButtonsProps } from "@/types/modal";
 
 const ModalTypeButtons = ({
   selectedType,

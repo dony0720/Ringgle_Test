@@ -16,21 +16,14 @@ import ModalTitle from "../Modal/ModalTitle";
 import ModalDateTime from "../Modal/ModalDateTime";
 import ModalTypeButtons from "../Modal/ModalTypeButtons";
 import { useSchedule } from "@/hooks/useSchedule";
-
-interface ScheduleType {
-  type: "event" | "todo" | "appointment";
-}
-
-interface TaskInformation {
-  title: string;
-  type: ScheduleType["type"];
-  date: string;
-  startTime: string;
-  endTime: string;
-}
+import { TaskType, TaskInformation } from "@/types/task";
+import { useDispatch } from "react-redux";
+import { setDate } from "@/store/dateSlice";
 
 const CreateTask = () => {
   const { addTask } = useSchedule();
+  const dispatch = useDispatch();
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   const formatDate = (date: Date): string => {
     const year = date.getFullYear();
@@ -43,8 +36,8 @@ const CreateTask = () => {
     title: "",
     type: "event",
     date: formatDate(new Date()),
-    startTime: "오전 10:00",
-    endTime: "오후 10:00",
+    startTime: "오전 12:00",
+    endTime: "오전 01:00",
   });
 
   const saveTask = () => {
@@ -56,14 +49,20 @@ const CreateTask = () => {
 
     addTask(newTask);
 
+    // 현재 날짜 새로고침
+    dispatch(setDate(new Date(taskInformation.date).toISOString()));
+
     // 저장 후 초기화
     setTaskInformation({
       title: "",
       type: "event",
       date: formatDate(new Date()),
-      startTime: "오전 10:00",
-      endTime: "오후 10:00",
+      startTime: "오전 12:00",
+      endTime: "오전 01:00",
     });
+
+    // 모달 닫기
+    setIsDialogOpen(false);
   };
 
   const buttonData = [
@@ -86,7 +85,11 @@ const CreateTask = () => {
           </Button>
         </PopoverTrigger>
         <PopoverContent align="start" className="w-[100px] shadow-lg p-0">
-          <Dialog modal={false}>
+          <Dialog
+            open={isDialogOpen}
+            onOpenChange={setIsDialogOpen}
+            modal={false}
+          >
             {buttonData.map((button) => (
               <DialogTrigger asChild key={button.type}>
                 <Button
@@ -95,8 +98,9 @@ const CreateTask = () => {
                   onClick={() => {
                     setTaskInformation((prev) => ({
                       ...prev,
-                      type: button.type as ScheduleType["type"],
+                      type: button.type as TaskType["type"],
                     }));
+                    setIsDialogOpen(true);
                   }}
                 >
                   {button.label}

@@ -1,13 +1,17 @@
-import * as React from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import { DayPicker, DayPickerSingleProps } from "react-day-picker";
+import { DayPicker } from "react-day-picker";
 import { ko } from "date-fns/locale";
 import { cn } from "@/lib/utils";
 import { buttonVariants } from "@/components/ui/button";
 
-interface CalendarProps extends Omit<DayPickerSingleProps, "mode"> {
+interface CalendarProps {
   selected?: Date;
   onSelect?: (date: Date | undefined) => void;
+  className?: string;
+  classNames?: Record<string, string>;
+  showOutsideDays?: boolean;
+  month?: Date;
+  onMonthChange?: (date: Date) => void;
 }
 
 function Calendar({
@@ -58,7 +62,7 @@ function Calendar({
         day_selected:
           "bg-blue-400 text-white hover:bg-blue-500 hover:text-white focus:bg-blue-400 focus:text-white",
         day_today:
-          "bg-blue-300 text-blue-600 rounded-full hover:bg-blue-300 hover:cursor-pointer hover:text-blue-600",
+          "rounded-full hover:bg-blue-300 hover:cursor-pointer hover:text-blue-600",
         day_outside:
           "day-outside text-muted-foreground aria-selected:bg-accent/50 aria-selected:text-muted-foreground",
         day_disabled: "text-muted-foreground opacity-50",

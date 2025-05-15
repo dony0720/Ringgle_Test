@@ -1,4 +1,4 @@
-export type ScheduleType = "event" | "todo" | "appointment";
+export type ScheduleType = "event" | "todo" | "appointment"; //단순한 문자열 값들로 type 정의
 
 export interface Schedule {
   title: string;
@@ -13,9 +13,19 @@ export interface Task extends Schedule {
   createdAt: string;
 }
 
+export interface Todo {
+  id: number;
+  title: string;
+  date: string;
+  startTime: string;
+  endTime: string;
+  type: string;
+  createdAt: string;
+}
+
 export interface GroupedTasks {
-  [date: string]: {
-    tasks: Task[];
+  [weekStartDate: string]: {
+    tasks: Todo[];
   };
 }
 

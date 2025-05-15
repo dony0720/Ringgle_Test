@@ -1,15 +1,14 @@
 import CreateTask from "./CreateTask";
 import { Calendar } from "@/components/ui/calendar";
-// import Modal from "../Modal";
 import { useDispatch, useSelector } from "react-redux";
-import { setDate } from "@/store/features/dateSlice";
+import { setDate } from "@/store/dateSlice";
 import { RootState } from "@/store/store";
 import { useMemo, useState, useEffect } from "react";
 
 const LeftContent = () => {
-  const dispatch = useDispatch();
-  const dateString = useSelector((state: RootState) => state.date.currentDate);
-  const [calendarMonth, setCalendarMonth] = useState<Date>(new Date());
+  const dispatch = useDispatch(); //Redux 스토어의 상태를 변경할 수 있음
+  const dateString = useSelector((state: RootState) => state.date.currentDate); //Redux 스토어의 상태를 읽을 수 있음
+  const [calendarMonth, setCalendarMonth] = useState<Date>(new Date()); //캘린더의 월을 선택할 수 있음
 
   const currentDate = useMemo(() => {
     return dateString ? new Date(dateString) : undefined;
@@ -25,10 +24,6 @@ const LeftContent = () => {
   const handleDateSelect = (newDate: Date | undefined) => {
     if (newDate) {
       const selectedDate = new Date(newDate);
-      if (currentDate) {
-        selectedDate.setHours(currentDate.getHours());
-        selectedDate.setMinutes(currentDate.getMinutes());
-      }
       dispatch(setDate(selectedDate.toISOString()));
     }
   };
@@ -43,7 +38,6 @@ const LeftContent = () => {
         onSelect={handleDateSelect}
         className="p-0"
       />
-      {/* <Modal /> */}
     </div>
   );
 };

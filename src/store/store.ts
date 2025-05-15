@@ -1,12 +1,11 @@
 import { configureStore } from "@reduxjs/toolkit";
-import dateReducer, { dateChangeMiddleware } from "./features/dateSlice";
+import dateReducer from "./dateSlice";
 
 export const store = configureStore({
   reducer: {
     date: dateReducer,
   },
-  middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat(dateChangeMiddleware),
+  middleware: (getDefaultMiddleware) => getDefaultMiddleware(),
 });
 
 export type RootState = ReturnType<typeof store.getState>;

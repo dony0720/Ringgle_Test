@@ -5,7 +5,7 @@ import {
 } from "@heroicons/react/24/outline";
 import { Button } from "@/components/ui/button";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
-import { moveWeek, setToday } from "@/store/features/dateSlice";
+import { moveWeek, setToday } from "@/store/dateSlice";
 
 const Header = () => {
   const dispatch = useAppDispatch();

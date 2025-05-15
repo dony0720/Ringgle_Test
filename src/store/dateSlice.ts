@@ -1,25 +1,27 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-
-interface DateState {
-  selectedDate: Date | undefined;
-}
-
+import { DateState } from "@/types/date";
 const initialState: DateState = {
-  selectedDate: undefined,
+  currentDate: new Date().toISOString(),
 };
 
 const dateSlice = createSlice({
   name: "date",
   initialState,
   reducers: {
-    setSelectedDate: (
-      state: DateState,
-      action: PayloadAction<Date | undefined>
-    ) => {
-      state.selectedDate = action.payload;
+    moveWeek: (state, action: PayloadAction<"prev" | "next">) => {
+      const currentDate = new Date(state.currentDate);
+      const weekChange = action.payload === "prev" ? -7 : 7;
+      currentDate.setDate(currentDate.getDate() + weekChange);
+      state.currentDate = currentDate.toISOString();
+    },
+    setToday: (state) => {
+      state.currentDate = new Date().toISOString();
+    },
+    setDate: (state, action: PayloadAction<string>) => {
+      state.currentDate = action.payload;
     },
   },
 });
 
-export const { setSelectedDate } = dateSlice.actions;
+export const { moveWeek, setToday, setDate } = dateSlice.actions;
 export default dateSlice.reducer;
